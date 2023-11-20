@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CoachController;
+use App\Http\Controllers\AdminstratorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->group( function () {
 
 Route::post("user/reg" , [UserController::class, "store"]);
 Route::post("coach/reg", [CoachController::class, "store"]);
+Route::post("admin/reg", [AdminstratorController::class, "store"]);
