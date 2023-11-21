@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Contracts\LoginRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminLoginRequest extends FormRequest implements LoginRequestInterface
+class CoachLoginRequest extends FormRequest implements LoginRequestInterface
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class AdminLoginRequest extends FormRequest implements LoginRequestInterface
     public function rules():array
     {
         return [
-            "email"     => "require|email",
-            "password"  => "require|string",
+            "email"     => "required|email",
+            "password"  => "required|string",
             "remember"  => "boolean"
         ];
     }

@@ -25,9 +25,9 @@ class UserLoginRequest extends FormRequest implements  LoginRequestInterface
     public function rules():array
     {
         return [
-            "email" => "required|email",
-            "password" => "required|string",
-            "remember" => "boolean"
+            "email"     => "required|email",
+            "password"  => "required|string",
+            "remember"  => "boolean"
         ];
     }
 }

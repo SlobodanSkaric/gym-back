@@ -16,10 +16,14 @@ class AuthController extends Controller
         unset($roleValidation["remember"]);
 
         if($role == "user"){
-            return $this->userLogin($roleValidation, $remember);
+            return $this->userLogin($roleValidation, $remember,$role);
         }
         if($role == "admin"){
-            return $this->adminLogin($roleValidation, $remember);
+            return $this->adminLogin($roleValidation, $remember,$role);
+        }
+
+        if($role == "coach"){
+            return $this->coachLogin($roleValidation, $remember,$role);
         }
 
         return response([
@@ -27,7 +31,7 @@ class AuthController extends Controller
         ]);
     }
 
-    private function userLogin($parameters, $remember)
+    private function userLogin($parameters, $remember, $role)
     {
         if(!\Illuminate\Support\Facades\Auth::attempt($parameters, $remember)){
             return response([
@@ -42,13 +46,14 @@ class AuthController extends Controller
         return response([
             "user" =>[
                 "email" => $user->email,
-                "name" => $user->name
+                "name"  => $user->name,
+                "role"  => $role
             ],
             "token" => $token
         ]);
     }
 
-    private function adminLogin($parameters, $remember)
+    private function adminLogin($parameters, $remember, $role)
     {
         if(!\Illuminate\Support\Facades\Auth::guard("admin")->attempt($parameters, $remember)){
             return response([
@@ -63,7 +68,30 @@ class AuthController extends Controller
         return response([
             "admin" =>[
                 "email" => $user->email,
-                "name" => $user->name
+                "name"  => $user->name,
+                "role"  => $role
+            ],
+            "token" => $token
+        ]);
+    }
+
+    private function coachLogin($parameters, $remember, $role)
+    {
+        if(!\Illuminate\Support\Facades\Auth::guard("coach")->attempt($parameters, $remember)){
+            return response([
+                "error" => "Credencial is not corect"
+            ], 422);
+        }
+
+        $user = Auth::guard("coach")->user();
+
+        $token = $user->createToken("coach_login_token")->plainTextToken;
+
+        return response([
+            "admin" =>[
+                "email" => $user->email,
+                "name"  => $user->name,
+                "role"  => $role
             ],
             "token" => $token
         ]);
