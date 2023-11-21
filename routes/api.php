@@ -20,6 +20,9 @@ use App\Http\Controllers\AdminstratorController;
 Route::middleware('auth:sanctum')->group( function () {
 });
 
+//Registration route
 Route::post("user/reg" , [UserController::class, "store"]);
 Route::post("coach/reg", [CoachController::class, "store"]);
 Route::post("admin/reg", [AdminstratorController::class, "store"]);
+
+//Login route
