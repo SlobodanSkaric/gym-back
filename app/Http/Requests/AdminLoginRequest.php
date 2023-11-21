@@ -5,16 +5,16 @@ namespace App\Http\Requests;
 use App\Contracts\LoginRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserLoginRequest extends FormRequest implements  LoginRequestInterface
+class AdminLoginRequest extends FormRequest implements LoginRequestInterface
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize():bool
+    public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,11 +22,11 @@ class UserLoginRequest extends FormRequest implements  LoginRequestInterface
      *
      * @return array<string, mixed>
      */
-    public function rules():array
+    public function rules()
     {
         return [
-            "email" => "required|email",
-            "password" => "required|string",
+            "email" => "require|email",
+            "password" => "require|string",
             "remember" => "boolean"
         ];
     }

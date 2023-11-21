@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\AdminstratorController;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,3 +26,5 @@ Route::post("coach/reg", [CoachController::class, "store"]);
 Route::post("admin/reg", [AdminstratorController::class, "store"]);
 
 //Login route
+
+Route::post("login/{role}", [AuthController::class, "login"])->where("role", "user|admin|coach  ");

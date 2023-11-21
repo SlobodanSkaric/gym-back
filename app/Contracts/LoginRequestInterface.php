@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface LoginRequestInterface
 {
-    public function ruls();
+    public function rules():array;
 }

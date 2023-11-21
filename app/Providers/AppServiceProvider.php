@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\LoginRequestInterface;
+use App\Http\Requests\AdminLoginRequest;
+use App\Http\Requests\UserLoginRequest;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(LoginRequestInterface::class, UserLoginRequest::class);
+        $this->app->bind(LoginRequestInterface::class, AdminLoginRequest::class);
     }
+
+
 }
