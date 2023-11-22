@@ -27,4 +27,4 @@ Route::post("admin/reg", [AdminstratorController::class, "store"]);
 
 //Login route
 
-Route::post("login/{role}", [AuthController::class, "login"])->where("role", "user|admin|coach");
+Route::post("login/{role}", [AuthController::class, "login"])->where("role", "user|admin|coach|.*");
