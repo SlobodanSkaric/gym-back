@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Contracts\LoginRequestInterface;
+use App\Http\Requests\AdminLoginRequest;
+use App\Http\Requests\CoachLoginRequest;
+use App\Http\Requests\UserLoginRequest;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -23,8 +27,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
+       // $this->registerPolicies();
+        $this->app->bind(LoginRequestInterface::class, UserLoginRequest::class);
+        //$this->app->bind(LoginRequestInterface::class, AdminLoginRequest::class);
+        //$this->app->bind(LoginRequestInterface::class, CoachLoginRequest::class);
         //
     }
 }

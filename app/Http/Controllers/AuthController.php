@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login(UserLoginRequest $request, $role):\Illuminate\Http\Response{
+    public function login(LoginRequestInterface $request, $role):\Illuminate\Http\Response{
         $roleValidation = $request->validated();
 
         $remember = $roleValidation["remember"] ?? false;
