@@ -9,15 +9,16 @@ use App\Http\Controllers\AuthController;
 
 
 
+
 Route::middleware(['auth:sanctum'])->group( function () {
     //admin route
     Route::get("admin", [AdminstratorController::class, "index"])->middleware(["role:admin"]);
     Route::apiResource("users", UserController::class)->middleware(["role:admin,coach"]);
 
     //coach route
-    Route::get("coach", [CoachController::class , "index"])->middleware("role:admin,coach");
-});
+    Route::get("coach", [CoachController::class, "index"])->middleware("role:admin,coach");
 
+});
 
 //Registration route
 Route::post("user/reg" , [UserController::class, "store"]);
@@ -26,4 +27,4 @@ Route::post("admin/reg", [AdminstratorController::class, "store"]);
 
 //Login route
 
-Route::post("login/{role}", [AuthController::class, "login"])->where("role", "user|admin|coach");
+Route::post("login/{role}", [AuthController::class, "login"])->where("role", "user|admin|coach|.*");

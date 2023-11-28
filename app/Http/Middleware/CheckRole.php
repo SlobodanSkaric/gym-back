@@ -12,14 +12,15 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function handle($request, Closure $next, ...$roles)
     {
         $token = $request->user()->tokens->first();
-
+        //dd($roles);
         if (!$token || !$this->userHasAnyRole($token, ...$roles)) {
-            abort(403, 'Unauthorized.');
+            //abort(403, 'Unauthorized.');
+            return response()->json(["message" => "Unatohorized user on this route"]);
         }
 
         return $next($request);
@@ -28,14 +29,14 @@ class CheckRole
     protected function userHasAnyRole($token, ...$roles)
     {
         $abilities = $token->abilities;
-
+        //dd($abilities);
         foreach ($roles as $role) {
             if (in_array("role:$role", $abilities)) {
                 return true;
             }
         }
 
-        return response()->json(["message" => "Unauthorized role"]);
+        return false;
     }
 
 }
