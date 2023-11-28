@@ -35,7 +35,7 @@ class CheckRole
             }
         }
 
-        return false;
+        return response()->json(["message" => "Unauthorized role"]);
     }
 
 }

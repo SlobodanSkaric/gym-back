@@ -55,6 +55,6 @@ class Coach extends Authenticatable
             }
         }
 
-        return false;
+        return response()->json(["message" => "Unauthorized role"]);
     }
 }
