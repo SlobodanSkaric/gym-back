@@ -15,7 +15,8 @@ class AdminstratorController extends Controller
      */
     public function index()
     {
-        //
+        $admin = Administrator::all();
+        return $admin;
     }
 
     /**

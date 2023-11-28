@@ -15,7 +15,9 @@ class CoachController extends Controller
      */
     public function index()
     {
-        //
+        $coach = Coach::all();
+
+        return $coach;
     }
 
     /**
