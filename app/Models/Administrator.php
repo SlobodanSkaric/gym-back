@@ -39,4 +39,22 @@ class Administrator extends Authenticatable
     protected $table = "admistrator";
 
     protected $fillable = ["name", "lastname", "email", "password"];
+
+    public function hesAnyRole(...$roles){
+        $token = $this->tokens()->first();
+
+        if(!$token){
+            return false;
+        }
+
+        $abilities = json_decode($token->abilities, true);
+
+        foreach($roles as $role){
+            if(in_array("role:$role", $abilities)){
+                return true;
+            }
+        }
+
+        return response()->json(["message" => "Unauthorized role"]);
+    }
 }

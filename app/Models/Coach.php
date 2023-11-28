@@ -39,4 +39,22 @@ class Coach extends Authenticatable
     protected $table = "coach";
 
     protected $fillable = ["name", "lastname", "email", "password"];
+
+    public function hasAnyRole(...$roles){
+        $token = $this->tokens()->first();
+
+        if(!$token){
+            return false;
+        }
+
+        $abilities = json_decode($token->abilities, true);
+
+        foreach ($roles as $role){
+            if(in_array("role:$role", $abilities)){
+                return true;
+            }
+        }
+
+        return response()->json(["message" => "Unauthorized role"]);
+    }
 }

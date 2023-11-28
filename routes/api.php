@@ -17,7 +17,8 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->group( function () {
+Route::middleware(['auth:sanctum', "role:admin,coach"])->group( function () {
+    Route::apiResource("users", UserController::class);
 });
 
 //Registration route
