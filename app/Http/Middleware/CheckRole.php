@@ -17,9 +17,9 @@ class CheckRole
     public function handle($request, Closure $next, ...$roles)
     {
         $token = $request->user()->tokens->first();
-        //dd($roles);
+
         if (!$token || !$this->userHasAnyRole($token, ...$roles)) {
-            //abort(403, 'Unauthorized.');
+
             return response()->json(["message" => "Unatohorized user on this route"]);
         }
 
@@ -29,7 +29,7 @@ class CheckRole
     protected function userHasAnyRole($token, ...$roles)
     {
         $abilities = $token->abilities;
-        //dd($abilities);
+
         foreach ($roles as $role) {
             if (in_array("role:$role", $abilities)) {
                 return true;
