@@ -86,13 +86,13 @@ class UserController extends Controller
                 }catch (ModelNotFoundException $e){
                     return \response()->json(["message" => "No related user"]);
                 }
-
-
             }
             /*TODO implement mechanisam coach get user*/
         }catch (ModelNotFoundException  $e){
             return response()->json(["message" => "User not existe"]);
         }
+
+        return response()->json(["message", "No set valid role"], 402);
     }
 
     /**
