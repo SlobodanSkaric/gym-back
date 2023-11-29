@@ -80,7 +80,7 @@ class UserController extends Controller
 
             if($role == "coach"){
                 try{
-                    $allCoacheUser = Coach::where("user_id", $id)->get();
+                    $allCoacheUser = Coach::with("users")->get();
 
                     return \response()->json($allCoacheUser);
                 }catch (ModelNotFoundException $e){
