@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegisterRequest;
+use App\Models\Coach;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -55,11 +58,41 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+
+        $privilegsRequest = $request->user()->tokens->first();
+        $abilities = $privilegsRequest->abilities;
+        $roleAbilities = $abilities[0];
+        $rolePos = strpos($roleAbilities, ":") +1;
+        $role = substr($roleAbilities, $rolePos);
+        //dd($role);
+        //$privilegs = in_array("role:admin", $abilities);
+
+        try {
+            $user = User::findOrFail($id);
+
+            if($role == "admin"){
+                    return response()->json($user);
+            }
+
+            if($role == "coach"){
+                try{
+                    $allCoacheUser = Coach::where("user_id", $id)->get();
+
+                    return \response()->json($allCoacheUser);
+                }catch (ModelNotFoundException $e){
+                    return \response()->json(["message" => "No related user"]);
+                }
+
+
+            }
+            /*TODO implement mechanisam coach get user*/
+        }catch (ModelNotFoundException  $e){
+            return response()->json(["message" => "User not existe"]);
+        }
     }
 
     /**
