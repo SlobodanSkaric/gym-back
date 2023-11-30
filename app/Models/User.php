@@ -46,7 +46,7 @@ class User extends Authenticatable
     protected $fillable = ["name", "lastname", "email", "password"];
 
     public function coach(){
-        return $this->hasMany(Coach::class);
+        return $this->belongsTo(Coach::class);
     }
 
     public function hasAnyRole(...$roles)

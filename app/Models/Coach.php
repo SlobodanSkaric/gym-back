@@ -41,7 +41,7 @@ class Coach extends Authenticatable
     protected $fillable = ["name", "lastname", "email", "password"];
 
     public function users(){
-        return $this->belongsTo(User::class, "id");
+        return $this->hasMany(User::class, "id");
     }
 
     public function hasAnyRole(...$roles){
