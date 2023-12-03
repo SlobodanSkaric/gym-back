@@ -18,10 +18,11 @@ class AdministratorFactory extends Factory
     public function definition()
     {
         return [
-            "name" => fake()->name,
-            "lastname" => fake()->lastName,
-            "email" => fake()->unique()->email,
-            "password" => Hash::make("adminadmin81")
+            "name"      => fake()->name,
+            "lastname"  => fake()->lastName,
+            "email"     => fake()->unique()->email,
+            "status"    => 1,
+            "password"  => Hash::make("adminadmin81")
         ];
     }
 }

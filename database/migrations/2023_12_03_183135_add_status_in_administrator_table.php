@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger("status")->default(0);
-            $table->unsignedBigInteger('coach_id')->nullable();
-
-            $table->foreign('coach_id')->references('id')->on('coach');
+        Schema::table('admistrator', function (Blueprint $table) {
+            $table->tinyInteger("status")->default(1);
         });
     }
 
@@ -28,9 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(["coach_id"]);
-            $table->dropColumn("coach_id");
+        Schema::table('admistrator', function (Blueprint $table) {
             $table->dropColumn("status");
         });
     }
