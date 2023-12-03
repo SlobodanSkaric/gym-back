@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
-use App\Contracts\LoginRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CoachLoginRequest extends FormRequest implements LoginRequestInterface
+class UserDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class CoachLoginRequest extends FormRequest implements LoginRequestInterface
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,12 +21,10 @@ class CoachLoginRequest extends FormRequest implements LoginRequestInterface
      *
      * @return array<string, mixed>
      */
-    public function rules():array
+    public function rules()
     {
         return [
-            "email"     => "required|email",
-            "password"  => "required|string",
-            "remember"  => "boolean"
+            "status" => "integer|in:0,1"
         ];
     }
 }

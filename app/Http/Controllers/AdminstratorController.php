@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AdministratorRegistrationRequest;
+use App\Http\Requests\Admin\AdministratorRegistrationRequest;
 use App\Models\Administrator;
 use Illuminate\Http\Request;
 

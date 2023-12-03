@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRegisterRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Models\Coach;
+use App\Http\Requests\User\UserDeleteRequest;
+use App\Http\Requests\User\UserRegisterRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
+use function PHPUnit\Framework\isEmpty;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        $users = User::all();
+        $users = User::where("status", "=", 2)->get();
 
-        return $users;
+        if(count($users) == 0){
+            return response()->json(["message" => "No users in databse"]);
+        }
+        return response()->json(["users" => $users]);
     }
 
     /**
@@ -67,11 +70,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->coach;
 
-            $getUserToken = $request->user()->tokens->first();
-            $abilities = $getUserToken->abilities;
-            $roleAbilities = $abilities[0];
-            $roleSplit = strpos($roleAbilities, ":") +1;
-            $role = substr($roleAbilities, $roleSplit);
+            $role = $this->separatedRole($request);
 
             if($role != "user"){
                 return \response()->json(["message" => "Role is not corect"]);
@@ -92,11 +91,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, $id)
     {
-        $getUserToken = $request->user()->tokens->first();
-        $abilities = $getUserToken->abilities;
-        $roleAbilities = $abilities[0];
-        $roleSplit = strpos($roleAbilities, ":") +1;
-        $role = substr($roleAbilities, $roleSplit);
+        $role = $this->separatedRole($request);
 
         if($role != "user"){
             return \response()->json(["message" => "Role is not corect"]);
@@ -104,16 +99,12 @@ class UserController extends Controller
 
         $request->validated();
         try {
-            //dd($request["status"]);
-            $user = User::where("id", $id)->update(["status" => $request["status"]]);
+             User::where("id", $id)->update(["status" => $request["status"]]);
 
             return \response()->json(["message" => "Update success"]);
         }catch (\Exception $e){
             return \response()->json(["message" => "Update not success"]);
         }
-
-
-
     }
 
     /**
@@ -122,8 +113,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(UserDeleteRequest $request, $id)
     {
-        //
+        $request->validated();
+
+        try {
+            User::where("id", $id)->update(["status" => 0]);
+
+            return response()->json(["message" => "Delete is success"]);
+        }catch (\Exception $e){
+            return response()->json(["message" => "Delete is not success"]);
+        }
+
+    }
+
+    private function separatedRole($req){
+        $getUserToken = $req->user()->tokens->first();
+        $abilities = $getUserToken->abilities;
+        $roleAbilities = $abilities[0];
+        $roleSplit = strpos($roleAbilities, ":") +1;
+        $role = substr($roleAbilities, $roleSplit);
+
+        return $role;
     }
 }

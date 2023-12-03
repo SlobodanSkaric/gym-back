@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use App\Contracts\LoginRequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminLoginRequest extends FormRequest implements LoginRequestInterface
+class UserLoginRequest extends FormRequest implements  LoginRequestInterface
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize():bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,8 +25,8 @@ class AdminLoginRequest extends FormRequest implements LoginRequestInterface
     public function rules():array
     {
         return [
-            "email"     => "require|email",
-            "password"  => "require|string",
+            "email"     => "required|email",
+            "password"  => "required|string",
             "remember"  => "boolean"
         ];
     }

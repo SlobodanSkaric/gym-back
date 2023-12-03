@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\LoginRequestInterface;
-use App\Http\Requests\UserLoginRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
