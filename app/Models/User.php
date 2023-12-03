@@ -43,10 +43,11 @@ class User extends Authenticatable
 
     protected  $table = "users";
 
-    protected $fillable = ["name", "lastname", "email", "password"];
+    protected $fillable = ["name", "lastname", "email", "password", "coach_id"];
 
-    public function coach(){
-        return $this->belongsTo(User::class);
+    public function coach(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Coach::class);
     }
 
     public function hasAnyRole(...$roles)

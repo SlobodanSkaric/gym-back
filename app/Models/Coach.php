@@ -36,12 +36,17 @@ class Coach extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
 
+    /**
+     * @var \Illuminate\Support\HigherOrderCollectionProxy|mixed
+     */
+    public mixed $users;
     protected $table = "coach";
 
     protected $fillable = ["name", "lastname", "email", "password"];
 
-    public function users(){
-        return $this->hasMany(Coach::class);
+    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(User::class, "coach_id");
     }
 
     public function hasAnyRole(...$roles){

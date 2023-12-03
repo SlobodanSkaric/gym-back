@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\Coach;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -62,36 +63,23 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-
-        $privilegsRequest = $request->user()->tokens->first();
-        $abilities = $privilegsRequest->abilities;
-        $roleAbilities = $abilities[0];
-        $rolePos = strpos($roleAbilities, ":") +1;
-        $role = substr($roleAbilities, $rolePos);
-        //dd($role);
-        //$privilegs = in_array("role:admin", $abilities);
-
-        try {
+        try{
             $user = User::findOrFail($id);
+            $user->coach;
 
-            if($role == "admin"){
-                    return response()->json($user);
+            $getUserToken = $request->user()->tokens->first();
+            $abilities = $getUserToken->abilities;
+            $roleAbilities = $abilities[0];
+            $roleSplit = strpos($roleAbilities, ":") +1;
+            $role = substr($roleAbilities, $roleSplit);
+
+            if($role != "user"){
+                return \response()->json(["message" => "Role is not corect"]);
             }
 
-            if($role == "coach"){
-                try{
-                    $allCoacheUser = Coach::where("user_id", $id)->get();
-
-                    return \response()->json($allCoacheUser);
-                }catch (ModelNotFoundException $e){
-                    return \response()->json(["message" => "No related user"]);
-                }
-
-
-            }
-            /*TODO implement mechanisam coach get user*/
-        }catch (ModelNotFoundException  $e){
-            return response()->json(["message" => "User not existe"]);
+            return \response()->json($user);
+        }catch (ModelNotFoundException $e){
+            return  \response()->json(["message" => "User not found"]);
         }
     }
 
@@ -100,11 +88,32 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        $getUserToken = $request->user()->tokens->first();
+        $abilities = $getUserToken->abilities;
+        $roleAbilities = $abilities[0];
+        $roleSplit = strpos($roleAbilities, ":") +1;
+        $role = substr($roleAbilities, $roleSplit);
+
+        if($role != "user"){
+            return \response()->json(["message" => "Role is not corect"]);
+        }
+
+        $request->validated();
+        try {
+            //dd($request["status"]);
+            $user = User::where("id", $id)->update(["status" => $request["status"]]);
+
+            return \response()->json(["message" => "Update success"]);
+        }catch (\Exception $e){
+            return \response()->json(["message" => "Update not success"]);
+        }
+
+
+
     }
 
     /**
