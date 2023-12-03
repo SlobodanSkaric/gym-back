@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CoachRegisterRequest;
+use App\Http\Requests\Coach\CoachRegisterRequest;
 use App\Models\Coach;
 use Illuminate\Http\Request;
 

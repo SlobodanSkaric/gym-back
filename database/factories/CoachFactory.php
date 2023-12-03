@@ -18,10 +18,10 @@ class CoachFactory extends Factory
     public function definition()
     {
         return [
-            "name" => fake()->name,
-            "lastname" => fake()->lastName,
-            "email" => fake()->unique()->email,
-            "password" => Hash::make("coachcoach81")
+            "name"      => fake()->name,
+            "lastname"  => fake()->lastName,
+            "email"     => fake()->unique()->email,
+            "password"  => Hash::make("coachcoach81")
         ];
     }
 }

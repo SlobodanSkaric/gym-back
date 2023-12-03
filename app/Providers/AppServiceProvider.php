@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Contracts\LoginRequestInterface;
-use App\Http\Requests\AdminLoginRequest;
-use App\Http\Requests\CoachLoginRequest;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Http\Requests\Coach\CoachLoginRequest;
+use App\Http\Requests\User\UserLoginRequest;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -44,7 +44,6 @@ class Coach extends Authenticatable
 
     protected $fillable = ["name", "lastname", "email", "password"];
 
-
     public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(User::class);

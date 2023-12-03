@@ -46,8 +46,6 @@ class User extends Authenticatable
     protected $fillable = ["name", "lastname", "email", "password", "coach_id"];
 
 
-
-
     public function coach(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Coach::class, "coach_id");

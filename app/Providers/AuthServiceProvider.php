@@ -4,9 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Contracts\LoginRequestInterface;
-use App\Http\Requests\AdminLoginRequest;
-use App\Http\Requests\CoachLoginRequest;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\User\UserLoginRequest;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
