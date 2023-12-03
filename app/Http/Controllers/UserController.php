@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\Coach;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -68,31 +69,19 @@ class UserController extends Controller
         $roleAbilities = $abilities[0];
         $rolePos = strpos($roleAbilities, ":") +1;
         $role = substr($roleAbilities, $rolePos);
-        //dd($role);
-        //$privilegs = in_array("role:admin", $abilities);
 
-        try {
-            $user = User::findOrFail($id);
-
-            if($role == "admin"){
-                    return response()->json($user);
-            }
-
-            if($role == "coach"){
-                try{
-                    $allCoacheUser = Coach::with("users")->get();
-
-                    return \response()->json($allCoacheUser);
-                }catch (ModelNotFoundException $e){
-                    return \response()->json(["message" => "No related user"]);
-                }
-            }
-            /*TODO implement mechanisam coach get user*/
-        }catch (ModelNotFoundException  $e){
-            return response()->json(["message" => "User not existe"]);
+        if($role != "user"){
+            return \response()->json(["message" => "Not valid role"]);
         }
 
-        return response()->json(["message", "No set valid role"], 402);
+
+            $user = User::with("coach")->find($id);
+
+            if(!$user){
+                return \response()->json(["message" => "No match user"]);
+            }
+
+            return \response()->json(["user" => $user]);
     }
 
     /**
@@ -100,11 +89,19 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        $request->validated();
+
+        try{
+            User::where("id", $id)->update(["status" => $request["status"]]);
+
+            return \response()->json(["message" => "Update success"]);
+        }catch (\Exception $e){
+            return \response()->json(["message" => "Update is not success"]);
+        }
     }
 
     /**
