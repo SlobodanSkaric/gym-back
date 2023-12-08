@@ -18,6 +18,9 @@ class CoachController extends Controller
      */
     public function index()
     {
+        if(!\Auth::user()){
+            return \response()->json(["message" => "Coach is not auth"]);
+        }
         $coach = Coach::with("users")->get();
 
         return response()->json(["coach" => $coach]);
@@ -60,6 +63,9 @@ class CoachController extends Controller
      */
     public function show(Request $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return \response()->json(["message" => "Is not action supported"]);
+        }
         try {
             $coach = Coach::where("id", $id)->with("users")->get();
 
@@ -85,6 +91,9 @@ class CoachController extends Controller
      */
     public function update(CoacheUpdateRequest $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return \response()->json(["message" => "Is not action supported"]);
+        }
         $valiidate = $request->validated();
         $role = $this->separatedRole($request);
 
