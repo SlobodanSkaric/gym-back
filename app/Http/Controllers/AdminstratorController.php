@@ -100,7 +100,7 @@ class AdminstratorController extends Controller
      */
     public function update(AdminUpdateRequest $request, $id)
     {
-        if(\Auth::user() != $id){
+        if(\Auth::user()->id != $id){
             return response()->json(["message" => "Is no Action supported"]);
         }
 
@@ -128,7 +128,7 @@ class AdminstratorController extends Controller
      */
     public function destroy($id)
     {
-        if(\Auth::user() != $id){
+        if(\Auth::user()->id != $id){
             return response()->json(["message" => "Is no Action supported"]);
         }
 
