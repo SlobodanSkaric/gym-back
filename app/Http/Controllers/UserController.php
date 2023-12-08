@@ -14,11 +14,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function index(): \Illuminate\Http\JsonResponse
+    public function index(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
     {
-        //check role
+        if(!\Auth::user()){
+            return response(["message" => "User is not auth"]);
+        }
         $users = User::where("status", "=", 1)->get();
 
         if(count($users) == 0){
@@ -66,6 +68,9 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return response()->json(["message" => "Is no action supproted"]);
+        }
         try{
             $user = User::findOrFail($id);
             $user->coach;
@@ -100,6 +105,10 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return response()->json(["message" => "Is no action supproted"]);
+        }
+
         $request->validated();
         $role = $this->separatedRole($request);
 
@@ -121,10 +130,14 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(UserDeleteRequest $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return response()->json(["message" => "Is no action supproted"]);
+        }
+
         $request->validated();
 
         try {
