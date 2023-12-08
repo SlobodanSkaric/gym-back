@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
-{
+{//TODO implement check auth user
     /**
      * Display a listing of the resource.
      *
@@ -82,13 +82,13 @@ class UserController extends Controller
         }
 
 
-            $user = User::with("coach")->find($id);
+           /* $user = User::with("coach")->find($id);
 
             if(!$user){
                 return \response()->json(["message" => "No match user"]);
             }
 
-            return \response()->json(["user" => $user]);
+            return \response()->json(["user" => $user]);*/
     }
 
     /**

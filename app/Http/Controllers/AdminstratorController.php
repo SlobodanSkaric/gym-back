@@ -8,7 +8,7 @@ use App\Models\Administrator;
 use Illuminate\Http\Request;
 
 class AdminstratorController extends Controller
-{
+{//TODO implement check auth user
     /**
      * Display a listing of the resource.
      *
