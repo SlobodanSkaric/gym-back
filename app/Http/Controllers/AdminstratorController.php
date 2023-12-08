@@ -6,7 +6,6 @@ use App\Http\Requests\Admin\AdministratorRegistrationRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 use App\Models\Administrator;
 use Illuminate\Http\Request;
-
 class AdminstratorController extends Controller
 {//TODO implement check auth user
     /**
@@ -16,6 +15,11 @@ class AdminstratorController extends Controller
      */
     public function index()
     {
+
+        if(!\Auth::user()){
+            return response()->json(["message" => "User is not auth"]);
+        }
+
         $role = $this->separatedRole(\request());
 
         if($role != "admin"){
@@ -64,6 +68,10 @@ class AdminstratorController extends Controller
      */
     public function show(Request $request, $id)
     {
+        if(\Auth::user()->id != $id){
+            return response()->json(["message" => "Is no action supported"]);
+        }
+
         $role = $this->separatedRole($request);
 
         if($role != "admin"){
@@ -92,6 +100,10 @@ class AdminstratorController extends Controller
      */
     public function update(AdminUpdateRequest $request, $id)
     {
+        if(\Auth::user() != $id){
+            return response()->json(["message" => "Is no Action supported"]);
+        }
+
         $role = $this->separatedRole($request);
         $request->validated();
 
@@ -116,6 +128,10 @@ class AdminstratorController extends Controller
      */
     public function destroy($id)
     {
+        if(\Auth::user() != $id){
+            return response()->json(["message" => "Is no Action supported"]);
+        }
+
         $role = $this->separatedRole(\request());
 
         if($role != "admin"){
