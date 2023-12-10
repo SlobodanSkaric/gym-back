@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Models\User;
