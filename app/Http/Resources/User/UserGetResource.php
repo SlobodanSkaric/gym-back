@@ -16,12 +16,12 @@ class UserGetResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"    => $this->id,
-            "name" => $this->name,
-            "lastname" => $this->lastname,
-            "email" => $this->email,
-            "status" => $this->getStatusAndUpdatePay($this->status, null),
-            "coach" => $this->coach ?  new CoachGetWithUser($this->coach ) : null
+            "id"        => $this->id,
+            "name"      => $this->name,
+            "lastname"  => $this->lastname,
+            "email"     => $this->email,
+            "status"    => $this->getStatusAndUpdatePay($this->status, null),
+            "coach"     => $this->coach ?  new CoachGetWithUser($this->coach ) : null
         ];
     }
 
