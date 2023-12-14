@@ -51,6 +51,10 @@ class User extends Authenticatable
         return $this->belongsTo(Coach::class, "coach_id");
     }
 
+    public function training_programs(){
+        return $this->belongsTo(TrainingProgram::class);
+    }
+
     public function hasAnyRole(...$roles)
     {
         $token = $this->tokens->first();
