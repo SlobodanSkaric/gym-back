@@ -6,7 +6,9 @@ use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\User\UserDeleteRequest;
 use App\Http\Resources\User\UserGetResource;
+use App\Models\TrainingProgram;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -76,13 +78,14 @@ class UserController extends Controller
             //$user = User::findOrFail($id);
             //$user->coach;
             $user = User::with("coach")->find($id);
+
             $role = $this->separatedRole($request);
 
             if($role != "user"){
                 return \response()->json(["message" => "Role is not corect"]);
             }
-
             return new UserGetResource($user);
+
         }catch (ModelNotFoundException $e){
             return  \response()->json(["message" => "User not found"]);
         }
