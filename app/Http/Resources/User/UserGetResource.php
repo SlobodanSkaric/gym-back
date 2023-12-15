@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use App\Http\Resources\Coach\CoachGetWithUser;
+use App\Http\Resources\TrainingProgram\TrainingProgramResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserGetResource extends JsonResource
@@ -16,12 +17,18 @@ class UserGetResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"    => $this->id,
-            "name" => $this->name,
-            "lastname" => $this->lastname,
-            "email" => $this->email,
-            "status" => $this->getStatusAndUpdatePay($this->status, null),
-            "coach" => $this->coach ?  new CoachGetWithUser($this->coach ) : null
+            "id"        => $this->id,
+            "name"      => $this->name,
+            "lastname"  => $this->lastname,
+            "email"     => $this->email,
+            "status"    => $this->getStatusAndUpdatePay($this->status, null),
+            "coach"     => $this->coach ?  new CoachGetWithUser($this->coach ) : null,
+            "training"  => $this->training_programs->map(function($data) {
+                return [
+                    "program_name"      => $data->program_name,
+                    "trening_weight"    => $data->trening_weight
+                ];
+            })
         ];
     }
 

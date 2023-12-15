@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
     public function training_programs(){
-        return $this->belongsTo(TrainingProgram::class);
+        return $this->belongsToMany(TrainingProgram::class, "user_training_program");
     }
 
     public function hasAnyRole(...$roles)

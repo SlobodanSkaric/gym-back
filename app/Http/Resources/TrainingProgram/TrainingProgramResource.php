@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Coach;
+namespace App\Http\Resources\TrainingProgram;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CoachGetWithUser extends JsonResource
+class TrainingProgramResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,9 @@ class CoachGetWithUser extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"        => $this->id,
-            "name"      => $this->name,
-            "lastname"  => $this->lastname,
-
+            "id"                => $this->id,
+            "program_name"      => $this->program_name,
+            "training_weight"   => $this->trening_weight
         ];
     }
 }
