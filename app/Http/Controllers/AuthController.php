@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\LoginRequestInterface;
 use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Resources\User\UserGetResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,7 +45,7 @@ class AuthController extends Controller
         $user->tokens()->delete();
         $token = $user->createToken("user_login_token", ["role:user"])->plainTextToken;
 
-        return response()->json(["token" => $token, "csrf" =>csrf_token()]);
+        return response()->json(["token" => $token, new UserGetResource($user) ,"csrf" =>csrf_token()]);
     }
 
     private function adminLogin($parameters, $remember, $role):JsonResponse
@@ -55,9 +56,9 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = Auth::guard("admin")->user();
-        $user->tokens()->delete();
-        $token = $user->createToken("admin_login_token",["role:admin"])->plainTextToken;
+        $admin = Auth::guard("admin")->user();
+        $admin->tokens()->delete();
+        $token = $admin->createToken("admin_login_token",["role:admin"])->plainTextToken;
 
         return response()->json(["token" => $token, "csrf" => csrf_token()]);
     }
@@ -70,9 +71,9 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = Auth::guard("coach")->user();
-        $user->tokens()->delete();
-        $token = $user->createToken("coach_login_token", ["role:coach"])->plainTextToken;
+        $coach = Auth::guard("coach")->user();
+        $coach->tokens()->delete();
+        $token = $coach->createToken("coach_login_token", ["role:coach"])->plainTextToken;
 
         return response()->json(["token" => $token, "csrf" => csrf_token()]);
     }

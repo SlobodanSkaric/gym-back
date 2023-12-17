@@ -18,7 +18,7 @@ class CoachGetWithUser extends JsonResource
             "id"        => $this->id,
             "name"      => $this->name,
             "lastname"  => $this->lastname,
-
+            "email"     => $this->email
         ];
     }
 }
