@@ -17,14 +17,14 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+    public function index(): \Illuminate\Http\JsonResponse
     {
         if(!\Auth::user()){
-            return response(["message" => "User is not auth"]);
+            return response()->json(["message" => "User is not auth"]);
         }
-        $users = User::where("status", "=", 1)->get();
+        $users = User::where("status", "=", 1)->with("coach")->get();
 
         if(count($users) == 0){
             return response()->json(["message" => "No users in databse"]);
@@ -67,7 +67,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return UserGetResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
