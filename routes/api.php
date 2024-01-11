@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::apiResource("users", UserController::class)->middleware(["role:user,admin,coach"]);
 
     //coach routes
-    Route::get("coach", [CoachController::class, "index"])->middleware("role:admin,coach");
+    Route::get("coach", [CoachController::class, "index"])->middleware("role:admin,coach,user");
     Route::get("coach/{id}", [CoachController::class, "show"])->middleware("role:admin,coach");
     Route::put("coach/update/{id}", [CoachController::class, "update"])->middleware("role:admin,coach");
 
