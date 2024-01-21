@@ -25,6 +25,7 @@ class UserGetResource extends JsonResource
             "coach"     => $this->coach ?  new CoachGetWithUser($this->coach ) : null,
             "training"  => $this->training_programs->map(function($data) {
                 return [
+                    "id"                => $data->id,
                     "program_name"      => $data->program_name,
                     "trening_weight"    => $data->trening_weight
                 ];
