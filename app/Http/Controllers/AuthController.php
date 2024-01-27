@@ -50,16 +50,19 @@ class AuthController extends Controller
         $token = $user->createToken("user_login_token", ["role:user"])->plainTextToken;
 
         $paymentDataTimeModel = Payment::where("user_id", $user->id)->orderBy("payment_at", "desc")->first();
-        $paymentDataTime = $paymentDataTimeModel->payment_at;
+        if($paymentDataTimeModel){
+            $paymentDataTime = $paymentDataTimeModel->payment_at;
 
-        $carbonObj = Carbon::parse($paymentDataTime);
-        $carbonAddDay = $carbonObj->addDays(1);
-        $carbonNow = Carbon::now();
+            $carbonObj = Carbon::parse($paymentDataTime);
+            $carbonAddDay = $carbonObj->addDays(1);
+            $carbonNow = Carbon::now();
 
-        if($carbonNow->gt($carbonAddDay)){
-            User::where("id", Auth::user()->id)->update(["status" => 0]);
-            $user = Auth::user();
+            if($carbonNow->gt($carbonAddDay)){
+                User::where("id", Auth::user()->id)->update(["status" => 0]);
+                $user = Auth::user();
+            }
         }
+
 
         return response()->json(["token" => $token, new UserGetResource($user) ,"csrf" =>csrf_token()]);
     }

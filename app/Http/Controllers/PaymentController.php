@@ -39,9 +39,9 @@ class PaymentController extends Controller
             return response()->json(["message", "You are not authorizet"]);
         }
 
-        $checkStatus = User::where("status", 1)->exists();
+        $checkStatus = \Auth::user();
 
-        if($checkStatus){
+        if($checkStatus->status){
             return response()->json(["message" => "Your status is active"]);
         }
 
