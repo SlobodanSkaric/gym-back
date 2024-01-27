@@ -6,8 +6,11 @@ use App\Contracts\LoginRequestInterface;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Resources\User\UserGetResource;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use function Sodium\add;
 
 class AuthController extends Controller
 {
@@ -45,6 +48,18 @@ class AuthController extends Controller
         $user = Auth::user();
         $user->tokens()->delete();
         $token = $user->createToken("user_login_token", ["role:user"])->plainTextToken;
+
+        $paymentDataTimeModel = Payment::where("user_id", $user->id)->orderBy("payment_at", "desc")->first();
+        $paymentDataTime = $paymentDataTimeModel->payment_at;
+
+        $carbonObj = Carbon::parse($paymentDataTime);
+        $carbonAddDay = $carbonObj->addDay();
+        $carbonNow = Carbon::now();
+
+        if($carbonNow->get($carbonAddDay)){
+            User::where("id", Auth::user()->id)->update(["status" => 0]);
+            $user = Auth::user();
+        }
 
         return response()->json(["token" => $token, new UserGetResource($user) ,"csrf" =>csrf_token()]);
     }
