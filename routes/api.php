@@ -7,6 +7,7 @@ use App\Http\Controllers\CoachController;
 use App\Http\Controllers\AdminstratorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TreningProgramController;
+use App\Http\Controllers\PaymentController;
 
 
 
@@ -25,6 +26,10 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     //trening program
     Route::get("trening_program", [TreningProgramController::class, "index"])->middleware("role:admin,coach,user");
+
+    //payment
+    Route::put("payment/user/{id}", [PaymentController::class, "add"])->middleware("role:admin,coach,user");
+    Route::get("payment", [PaymentController::class, "index"]);
 
 });
 
