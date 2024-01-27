@@ -29,7 +29,6 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     //payment
     Route::put("payment/user/{id}", [PaymentController::class, "add"])->middleware("role:admin,coach,user");
-    Route::get("payment", [PaymentController::class, "index"]);
 
 });
 

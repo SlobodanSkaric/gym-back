@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Payment\PaymentRequest;
+use App\Http\Resources\User\UserGetResource;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class PaymentController extends Controller
 {
@@ -35,18 +39,29 @@ class PaymentController extends Controller
             return response()->json(["message", "You are not authorizet"]);
         }
 
-        $addPayment = Payment::create([
-            "count"     => $paymentDataCount["count"],
-            "user_id"   => $id
-        ]);
+        $checkStatus = User::where("status", 1)->exists();
 
-        return response([
-            "payment_data" => [
-                "user_id" => $addPayment["user_id"],
-                "count"   => $addPayment["count"]
-            ]
-        ]);
+        if($checkStatus){
+            return response()->json(["message" => "Your status is active"]);
+        }
 
+        try{
+            DB::transaction(function() use ($id, $paymentDataCount) {
+                Payment::create([
+                    "count"     => $paymentDataCount["count"],
+                    "user_id"   => $id
+                ]);
+
+                User::where("id", $id)->update(["status" => 1]);
+
+            });
+        }catch (Exception $e){
+            return response()->json(["message" => "Transactio is not complited"]);
+        }
+
+        $user = User::with("coach")->find($id);
+
+        return new UserGetResource($user);
     }
 
     private function separatedRole($req){
