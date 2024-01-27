@@ -53,10 +53,10 @@ class AuthController extends Controller
         $paymentDataTime = $paymentDataTimeModel->payment_at;
 
         $carbonObj = Carbon::parse($paymentDataTime);
-        $carbonAddDay = $carbonObj->addDay();
+        $carbonAddDay = $carbonObj->addDays(1);
         $carbonNow = Carbon::now();
 
-        if($carbonNow->get($carbonAddDay)){
+        if($carbonNow->gt($carbonAddDay)){
             User::where("id", Auth::user()->id)->update(["status" => 0]);
             $user = Auth::user();
         }
