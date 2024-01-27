@@ -16,6 +16,7 @@ class CheckRole
      */
     public function handle($request, Closure $next, ...$roles)
     {
+
         $token = $request->user()->tokens->first();
 
         if (!$token || !$this->userHasAnyRole($token, ...$roles)) {
@@ -35,7 +36,6 @@ class CheckRole
                 return true;
             }
         }
-
         return false;
     }
 

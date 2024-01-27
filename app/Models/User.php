@@ -55,6 +55,10 @@ class User extends Authenticatable
         return $this->belongsToMany(TrainingProgram::class, "user_training_program");
     }
 
+    public function paymet(){
+        return $this->hasOne(Payment::class);
+    }
+
     public function hasAnyRole(...$roles)
     {
         $token = $this->tokens->first();
