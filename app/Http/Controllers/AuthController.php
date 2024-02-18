@@ -22,14 +22,14 @@ class AuthController extends Controller
         unset($roleValidation["remember"]);
 
         if($role == "user"){
-            return $this->userLogin($roleValidation, $remember,$role);
+            return $this->userLogin($roleValidation, $remember);
         }
         if($role == "admin"){
-            return $this->adminLogin($roleValidation, $remember,$role);
+            return $this->adminLogin($roleValidation, $remember);
         }
 
         if($role == "coach"){
-            return $this->coachLogin($roleValidation, $remember,$role);
+            return $this->coachLogin($roleValidation, $remember);
         }
 
         return response()->json([
@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
     }
 
-    private function userLogin($parameters, $remember, $role):JsonResponse
+    private function userLogin($parameters, $remember):JsonResponse
     {
         if(!\Illuminate\Support\Facades\Auth::attempt($parameters, $remember)){
             return response()->json([
@@ -67,7 +67,7 @@ class AuthController extends Controller
         return response()->json(["token" => $token, new UserGetResource($user) ,"csrf" =>csrf_token()]);
     }
 
-    private function adminLogin($parameters, $remember, $role):JsonResponse
+    private function adminLogin($parameters, $remember):JsonResponse
     {
         if(!\Illuminate\Support\Facades\Auth::guard("admin")->attempt($parameters, $remember)){
             return response()->json([
@@ -82,7 +82,7 @@ class AuthController extends Controller
         return response()->json(["token" => $token, "csrf" => csrf_token()]);
     }
 
-    private function coachLogin($parameters, $remember, $role):JsonResponse
+    private function coachLogin($parameters, $remember):JsonResponse
     {
         if(!\Illuminate\Support\Facades\Auth::guard("coach")->attempt($parameters, $remember)){
             return response()->json([
